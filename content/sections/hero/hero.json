@@ -1,22 +1,26 @@
 {
-  "intro": "Hej",
+  "intro": "Hi, there!",
   "heroPhoto": {
-    "src": "../../images/lego-dummy.png",
-    "alt": "My Photo"
+    "src": "../../images/tahmid_potrait.png",
+    "alt": "Tahmid's Photo"
   },
   "image": {
     "src": "../../images/waving-hand.png",
     "alt": "Waving Hand Emoji"
   },
-  "title": "I'm a Gatsby Starter",
+  "title": "I'm a Software Engineer",
   "subtitle": {
-    "prefix": "I do all the setup ",
-    "highlight": "for you",
+    "prefix": "from ",
+    "highlight": "Dhaka, Bangladesh",
     "suffix": "."
   },
-  "description": "A Gatsby Starter Project to easily get started with Portfolio Minimal theme.",
+  "description": "A passionate problem solver having more than 6 years of Software Engineering experience with 4+ years of experience in React/Typescript",
   "socialProfiles": {
-    "from": ["LinkedIn", "Medium", "Github", "Mail"],
+    "from": [
+      "LinkedIn",
+      "Github",
+      "Mail"
+    ],
     "showIcons": false
   }
 }
