@@ -2,42 +2,53 @@
   "projects": [
     {
       "visible": true,
-      "category": "🕹️ EASY AND QUICK SETUP",
-      "title": "Add content and deploy!",
-      "description": "Get up and running within minutes. Just install the starter, add your content, deploy it, and there you go! This starter works seamlessly with hosts like Netlify. Photo by Clément H on Unsplash.",
-      "tags": ["Content Integration", "Ready-2-Deploy"],
+      "category": "🗂 Professional",
+      "title": "OpenCRVS",
+      "description": "OpenCRVS (Civil registration & Vital Statistics) is a digital public good to help achieve universal civil registration and evidence-based decision making in all country contexts. OpenCRVS consists of multiple servers which run in Docker containers and requires Node JS.\n\n I worked on several parts of this large application. As an example, I worked onperformance management dashboard and developed several complex atomic pixel perfect UI components like month range picker, location picker filters. I have also written influx queries that fetches nationwide data.",
+      "tags": [
+        "Open Source",
+        "Monorepo",
+        "Health",
+        "FHIR",
+        "React",
+        "NodeJS",
+        "PWA",
+        "GraphQL",
+        "Elasticsearch",
+        "InfluxDB"
+      ],
       "image": {
-        "src": "../../images/clement-h-95YRwf6CNw8-unsplash.jpg",
-        "alt": "Quick Setup",
-        "linkTo": "https://github.com/konstantinmuenster/gatsby-starter-portfolio-minimal-theme"
+        "src": "../../images/opencrvs.png",
+        "alt": "opencrvs",
+        "linkTo": "https://www.opencrvs.org/"
       },
       "links": [
         {
           "type": "github",
-          "url": "https://github.com/konstantinmuenster/gatsby-starter-portfolio-minimal-theme"
+          "url": "https://github.com/opencrvs/opencrvs-core"
         },
         {
           "type": "external",
-          "url": "https://www.gatsbyjs.org/docs/mdx/writing-pages/"
+          "url": "https://www.opencrvs.org/"
         }
       ]
     },
     {
       "visible": true,
-      "category": "🧰 EXTENDABLE LAYOUT",
-      "title": "Add more sections!",
-      "description": "The starter includes predefined sections as well as a template for new, custom sections. Moreover, you can add new projects to this section without additional coding. Photo by Kelly Sikkema on Unsplash.",
-      "tags": ["Custom Sections", "Easy-2-Use"],
+      "category": "🗂 Professional",
+      "title": "LAMT",
+      "description": "LAMT Suite refactor - Loan Account Management Tool (LAMT) system refactor. Complete refactor of Java Springboot, AWS, Vue-Nuxt frontend tech stack to containerized node microservices monolithic architecture with NextJS frontend. I have written complete NextJS application from scratch and mentored one colleague to contribute as a co-author. I have also written NestJS graphql resolvers, REST apis.",
+      "tags": [
+        "NextJS",
+        "NestJS",
+        "GraphQL",
+        "MongoDB"
+      ],
       "image": {
-        "src": "../../images/kelly-sikkema-Hl3LUdyKRic-unsplash.jpg",
-        "alt": "Extendable Layout"
+        "src": "../../images/lukas-blazek-mcSDtbWXUZU-unsplash.jpg",
+        "alt": "lamt-dashboard-like"
       },
-      "links": [
-        {
-          "type": "github",
-          "url": "https://github.com/konstantinmuenster/gatsby-starter-portfolio-minimal-theme"
-        }
-      ]
+      "links": []
     }
   ],
   "button": {
