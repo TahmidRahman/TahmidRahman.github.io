@@ -26,16 +26,12 @@
           "url": "/#about"
         },
         {
-          "label": "Blog",
-          "url": "/blog"
-        },
-        {
           "label": "Projects",
           "url": "/#projects"
         },
         {
-          "label": "Github",
-          "url": "/#github"
+          "label": "Contact",
+          "url": "/#contact"
         }
       ],
       "ctaButton": {

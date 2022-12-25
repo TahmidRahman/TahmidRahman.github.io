@@ -4,12 +4,12 @@ sectionId: imprint
 
 #### Information pursuant to § 5 TMG
 
-YOURNAME<br />
-YOURSTREET<br />
-YOURCITY<br />
-YOURCOUNTRY
+Tahmid Rahman<br />
+Road 5<br />
+Sector 6, Uttara, Dhaka<br />
+Bangladesh
 
-E-Mail Address: <u>YOURMAIL@DOMAIN.COM</u>
+E-Mail Address: <u>TAHMID131@GMAIL.COM</u>
 
 ---
 

@@ -17,9 +17,9 @@
   "description": "A passionate problem solver having more than 6 years of Software Engineering experience with 4+ years of experience in React/Typescript",
   "socialProfiles": {
     "from": [
+      "Mail",
       "LinkedIn",
-      "Github",
-      "Mail"
+      "Github"
     ],
     "showIcons": false
   }

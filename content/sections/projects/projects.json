@@ -49,11 +49,32 @@
         "alt": "lamt-dashboard-like"
       },
       "links": []
+    },
+    {
+      "visible": true,
+      "category": "🗂 Professional - Part Time",
+      "title": "CloudCampus24",
+      "description": "Cloudcampus24.com helps students, parents or guardians to access notice, attendance records, transcript, financial statement, online fees payment, student profile and many more. I have developed the android application from scratch with react native. I have also deployed the first release of the application in play store.",
+      "tags": [
+        "React-Native",
+        "Android"
+      ],
+      "image": {
+        "src": "../../images/cloudcampus24.jpeg",
+        "alt": "cloudcampus24",
+        "linkTo": "https://play.google.com/store/apps/details?id=com.cloudcampus24&hl=en&gl=US"
+      },
+      "links": [
+        {
+          "type": "external",
+          "url": "https://play.google.com/store/apps/details?id=com.cloudcampus24&hl=en&gl=US"
+        }
+      ]
     }
   ],
   "button": {
     "visible": true,
     "label": "Visit on Github",
-    "url": "https://github.com/konstantinmuenster/gatsby-theme-portfolio-minimal"
+    "url": "https://github.com/tahmidrahman-dsi"
   }
 }
