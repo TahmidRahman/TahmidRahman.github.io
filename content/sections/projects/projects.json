@@ -70,6 +70,62 @@
           "url": "https://play.google.com/store/apps/details?id=com.cloudcampus24&hl=en&gl=US"
         }
       ]
+    },
+    {
+      "visible": true,
+      "category": "⚽ Pet Project",
+      "title": "Tic Tac Vue",
+      "description": "Experimental project, single page application designed and developed by me to try out different aspects of Vue.js and Vuex",
+      "tags": [
+        "Vue",
+        "Vuex",
+        "HTML",
+        "CSS",
+        "Responsive"
+      ],
+      "image": {
+        "src": "../../images/tic-tac-vue.png",
+        "alt": "tic-tac-vue",
+        "linkTo": "https://tic-tac-vuex.netlify.app/"
+      },
+      "links": [
+        {
+          "type": "github",
+          "url": "https://github.com/tahmidrahman-dsi/tic-tac-vue"
+        },
+        {
+          "type": "external",
+          "url": "https://tic-tac-vuex.netlify.app/"
+        }
+      ]
+    },
+    {
+      "visible": true,
+      "category": "⚽ Pet Project",
+      "title": "Github Trending",
+      "description": "Single page application, replicating github trending page consuming the github APIs",
+      "tags": [
+        "React",
+        "Github API",
+        "HTML",
+        "CSS",
+        "Responsive"
+      ],
+      "image": {
+        "src": "../../images/gittrending-react.png",
+        "alt": "github-trending-react",
+        "linkTo": "https://gittrending-react.netlify.app/"
+      },
+      "links": [
+        {
+          "type": "github",
+          "url": "https://github.com/TahmidRahman/gittrending"
+        },
+        {
+          "type": "external",
+          "url": "https://gittrending-react.netlify.app/"
+        }
+      ]
     }
   ],
   "button": {
