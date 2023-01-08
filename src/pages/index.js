@@ -7,8 +7,21 @@ import {
   ProjectsSection,
   Seo
 } from 'gatsby-theme-portfolio-minimal';
+import { firebaseConfig } from '../utils/firebase';
+import { initializeApp } from 'firebase/app';
+import { getAnalytics, logEvent } from 'firebase/analytics';
 
 export default function IndexPage() {
+  React.useEffect(() => {
+    function setupFirebaseAnalytics() {
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      if (analytics) {
+        logEvent(analytics, 'page_visited');
+      }
+    }
+    setupFirebaseAnalytics();
+  }, []);
   return (
     <>
       <Seo title="Tahmid Rahman Portfolio" />

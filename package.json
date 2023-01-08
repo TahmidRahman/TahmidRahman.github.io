@@ -13,6 +13,8 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
+    "firebase": "^9.15.0",
     "gatsby": "^4.18.2",
     "gatsby-theme-portfolio-minimal": "3.6.0",
     "react": "^17.0.2",
