@@ -25,8 +25,8 @@ defaults:
     shell: bash
 
 jobs:
-  # Build job
-  build:
+  # Build & deploy job
+  build & deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -81,15 +81,18 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./public
+      # Deployment step
+      - name: Deploy with gh-pages
+        run: ${{ steps.detect-package-manager.outputs.manager }} run deploy
 
   # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+  # deploy:
+  #   environment:
+  #     name: github-pages
+  #     url: ${{ steps.deployment.outputs.page_url }}
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   steps:
+  #     - name: Deploy to GitHub Pages
+  #       id: deployment
+  #       uses: actions/deploy-pages@v1
