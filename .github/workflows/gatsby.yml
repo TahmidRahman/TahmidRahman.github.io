@@ -26,7 +26,7 @@ defaults:
 
 jobs:
   # Build & deploy job
-  build & deploy:
+  build_deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
