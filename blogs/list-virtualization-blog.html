@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're Rendering Too Much: The Case for List Virtualization</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 18px;
+      line-height: 1.75;
+      color: #1a1a1a;
+      background: #fff;
+      padding: 2rem 1.25rem;
+    }
+
+    article {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 2.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-top: 2.75rem;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: #2a2a2a;
+    }
+
+    strong {
+      font-weight: 600;
+      color: #111;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85em;
+      background: #f4f4f4;
+      border: 1px solid #e4e4e4;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      color: #c0392b;
+    }
+
+    pre {
+      background: #f6f8fa;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #24292e;
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e8e8e8;
+      margin: 2.5rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.6rem 1rem;
+      background: #f6f8fa;
+      border: 1px solid #e1e4e8;
+      font-weight: 600;
+      color: #111;
+    }
+
+    td {
+      padding: 0.6rem 1rem;
+      border: 1px solid #e1e4e8;
+      color: #2a2a2a;
+    }
+
+    tr:nth-child(even) td {
+      background: #fafafa;
+    }
+
+    .note {
+      font-size: 0.82rem;
+      color: #888;
+      margin-top: -0.75rem;
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+<body>
+  <article>
+    <h1>You're Rendering Too Much: The Case for List Virtualization</h1>
+
+    <h2>The Problem</h2>
+    <p>You're building an admin dashboard. The product manager wants to show all 12,000 user records in a scrollable list — no pagination, "users hate clicking next." You shrug, map over the array, and ship it.</p>
+    <p>Then your browser tab starts choking.</p>
+    <p>Here's what's happening under the hood. Every <code>&lt;div&gt;</code> you render for each list item becomes a DOM node. The browser needs to lay it out, paint it, and keep track of it — all 12,000 of them. Even if 11,980 are completely off screen and invisible to the user, they still exist in memory. Layout calculations cascade. Scroll events trigger style recalculations across the entire tree.</p>
+    <p>Open Chrome DevTools while scrolling and you'll see it clearly: frame times jumping to 50–100ms, frames dropping well below the 60fps threshold that separates "smooth" from "janky." On a mid-range machine or a phone, it's not just slow — it freezes. Rendering 10,000 items without virtualization typically stalls the UI for 3–5 seconds on first load.</p>
+    <p>The list isn't the problem. The DOM is.</p>
+
+    <hr />
+
+    <h2>The Natural Instincts (And Why They Fall Short)</h2>
+    <p>When a list gets slow, most developers reach for one of three things:</p>
+    <p><strong>Pagination.</strong> Split the data into pages, only load 50 items at a time. This works well for tables and search results, but it kills scroll-based UIs. If you're building a feed, a log viewer, or anything that feels continuous — pagination breaks the experience. You've solved the performance problem by removing the feature.</p>
+    <p><strong>Infinite scroll / lazy loading.</strong> Load data in batches as the user scrolls down. This is better — but it only delays the problem. Every batch you load adds more DOM nodes. After a user scrolls through 500 items, all 500 are still mounted. Come back after 3,000 items and the browser is right back where it started: sluggish, memory-heavy, struggling.</p>
+    <p><strong>CSS tricks.</strong> <code>content-visibility: auto</code> is genuinely useful — it tells the browser it can skip painting off-screen elements. But the DOM nodes are still there. The browser still parses them, still tracks them in memory, still considers them for layout. You've reduced paint cost; you haven't reduced node count.</p>
+    <p>Each of these fixes a symptom. None of them touch the root cause.</p>
+
+    <hr />
+
+    <h2>What Virtualization Actually Does</h2>
+    <p>The real problem is simple: you're maintaining DOM nodes for items the user can't see. So the fix is equally simple: don't.</p>
+    <p>List virtualization (sometimes called "windowing") keeps only the visible items in the DOM — plus a small buffer above and below the viewport. Scroll through 100,000 rows and at any given moment, only ~20 DOM nodes exist. The rest don't. They've never been created.</p>
+    <p>DOM size stays constant regardless of data size. That's the whole idea — and it's why virtualization handles what every other approach can't.</p>
+
+    <hr />
+
+    <h2>How It Works</h2>
+    <p>Understanding the mechanism makes it much easier to debug issues and choose the right library. Here's the mental model:</p>
+    <p><strong>The outer container</strong> is a fixed-height <code>div</code> with <code>overflow: scroll</code>. This is what the user physically scrolls. Its height is whatever fits your layout — say, <code>600px</code>.</p>
+    <p><strong>The inner container</strong> is set to the <em>total</em> height of all items combined — even the ones not rendered. If you have 10,000 items at 40px each, the inner container is <code>400,000px</code> tall. This gives the scrollbar its correct proportions. The browser thinks the content is massive, because mathematically it is.</p>
+    <p><strong>Only visible items are rendered.</strong> A scroll event listener calculates which items fall within the current viewport, then mounts just those items — positioned absolutely with <code>transform: translateY()</code>.</p>
+<pre>
+┌──────────────────────────┐
+│     Outer Container      │  ← fixed height, scrollable
+│  ┌────────────────────┐  │
+│  │  Inner Container   │  │  ← height = total items × item height
+│  │  (400,000px tall)  │  │
+│  │                    │  │
+│  │  [item 47]  ───┐   │  │
+│  │  [item 48]     │   │  │  ← Visible window (~20 items rendered)
+│  │  [item 49]     │   │  │    Everything else: not in the DOM
+│  │  [item 50]  ───┘   │  │
+│  │                    │  │
+│  └────────────────────┘  │
+└──────────────────────────┘
+</pre>
+    <p><strong>Overscan</strong> is a small buffer — typically 2–5 extra items rendered just outside the viewport. It prevents a blank flash when the user scrolls quickly before the next batch can mount.</p>
+    <p>On each scroll tick, the math is straightforward: <code>startIndex = Math.floor(scrollTop / itemHeight)</code>. Items that fall out of range get unmounted; new ones in range get mounted. The browser manages a small, stable set of nodes no matter how large the underlying data gets.</p>
+
+    <hr />
+
+    <h2>Picking a Library</h2>
+    <p>All three major React virtualization libraries solve the same core problem. The tradeoffs come down to control, convenience, and bundle weight.</p>
+    <p><strong><code>react-window</code></strong> is the smallest and most established of the three. Its API is intentionally minimal: give it a fixed item height, a count, and a render function. That simplicity is also its constraint — variable-height items require <code>VariableSizeList</code> with manual height pre-measurement, which can get complicated. If your list items are uniform in height (a data table, a notifications feed), react-window is the cleanest choice.</p>
+    <p><strong><code>@tanstack/react-virtual</code></strong> is headless — it gives you the virtualization math and leaves all markup to you. It handles variable heights without manual measurement, supports horizontal lists and grids, and is framework-agnostic at its core. Despite being the largest in raw minified bytes, it's actually the lightest once compressed. The tradeoff is boilerplate: you manage the scroll container, refs, and item positioning yourself. Reach for this when you need full control over the DOM structure or a non-standard layout.</p>
+    <p><strong><code>react-virtuoso</code></strong> is the highest-level option. It handles variable heights automatically, supports reverse-scroll lists (chat UIs), sticky group headers, and infinite scroll out of the box — things you'd otherwise spend days building. The API is closest to just dropping in a component. The cost is size: at nearly 3× the gzipped weight of the other two, it's a meaningful addition to a bundle if you're only using its basics.</p>
+    <p><strong>Bundle sizes</strong> (source: Bundlephobia, May 2026):</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Package</th>
+          <th>Version</th>
+          <th>Minified</th>
+          <th>Gzipped</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>react-window</code></td>
+          <td>2.2.7</td>
+          <td>12.5 KB</td>
+          <td>6.5 KB</td>
+        </tr>
+        <tr>
+          <td><code>@tanstack/react-virtual</code></td>
+          <td>3.13.24</td>
+          <td>17.4 KB</td>
+          <td>5.3 KB</td>
+        </tr>
+        <tr>
+          <td><code>react-virtuoso</code></td>
+          <td>4.18.6</td>
+          <td>57.3 KB</td>
+          <td>18.4 KB</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>On raw scroll performance, all three maintain smooth 60fps under normal conditions — the differences between them rarely show up in real apps. There's no definitive public benchmark separating their rendering speeds, so treat bundle size and API fit as your primary decision criteria. A rough rule of thumb: if your items are fixed-size, use react-window. If you need flexibility and full control, use @tanstack/react-virtual. If your list is complex and you want the features handled for you, use react-virtuoso.</p>
+
+    <hr />
+
+    <h2>The Takeaway</h2>
+    <p>List virtualization is one of those techniques that feels like magic the first time you see a DOM tree stay flat while thousands of items scroll past. Once you understand the mechanism — a phantom full-height container, a visible window, a scroll listener doing simple arithmetic — it stops feeling magical and starts feeling obvious.</p>
+    <p>If you haven't tried it: pick one of the three libraries above, swap out a slow list, and open the Elements panel in DevTools. Watch the node count stay constant. It clicks immediately.</p>
+  </article>
+</body>
+</html>
