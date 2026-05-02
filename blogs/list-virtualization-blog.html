@@ -25,8 +25,15 @@
       font-size: 2rem;
       font-weight: 700;
       line-height: 1.25;
-      margin-bottom: 2.5rem;
+      margin-bottom: 0.75rem;
       letter-spacing: -0.02em;
+    }
+
+    .scope-note {
+      font-size: 0.9rem;
+      color: #777;
+      font-style: italic;
+      margin-bottom: 2.5rem;
     }
 
     h2 {
@@ -78,6 +85,16 @@
       font-size: inherit;
     }
 
+    .code-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: -0.5rem;
+      margin-top: 1.5rem;
+    }
+
     hr {
       border: none;
       border-top: 1px solid #e8e8e8;
@@ -121,9 +138,15 @@
 <body>
   <article>
     <h1>You're Rendering Too Much: The Case for List Virtualization</h1>
+    <p class="scope-note">This post explores list virtualization through a React lens. The concept applies broadly, but the libraries and code examples are React-specific.</p>
 
     <h2>The Problem</h2>
     <p>You're building an admin dashboard. The product manager wants to show all 12,000 user records in a scrollable list — no pagination, "users hate clicking next." You shrug, map over the array, and ship it.</p>
+<pre><code>{items.map(item =&gt; (
+  &lt;div key={item.id} className="list-item"&gt;
+    {item.name}
+  &lt;/div&gt;
+))}</code></pre>
     <p>Then your browser tab starts choking.</p>
     <p>Here's what's happening under the hood. Every <code>&lt;div&gt;</code> you render for each list item becomes a DOM node. The browser needs to lay it out, paint it, and keep track of it — all 12,000 of them. Even if 11,980 are completely off screen and invisible to the user, they still exist in memory. Layout calculations cascade. Scroll events trigger style recalculations across the entire tree.</p>
     <p>Open Chrome DevTools while scrolling and you'll see it clearly: frame times jumping to 50–100ms, frames dropping well below the 60fps threshold that separates "smooth" from "janky." On a mid-range machine or a phone, it's not just slow — it freezes. Rendering 10,000 items without virtualization typically stalls the UI for 3–5 seconds on first load.</p>
@@ -174,9 +197,46 @@
 
     <h2>Picking a Library</h2>
     <p>All three major React virtualization libraries solve the same core problem. The tradeoffs come down to control, convenience, and bundle weight.</p>
-    <p><strong><code>react-window</code></strong> is the smallest and most established of the three. Its API is intentionally minimal: give it a fixed item height, a count, and a render function. That simplicity is also its constraint — variable-height items require <code>VariableSizeList</code> with manual height pre-measurement, which can get complicated. If your list items are uniform in height (a data table, a notifications feed), react-window is the cleanest choice.</p>
-    <p><strong><code>@tanstack/react-virtual</code></strong> is headless — it gives you the virtualization math and leaves all markup to you. It handles variable heights without manual measurement, supports horizontal lists and grids, and is framework-agnostic at its core. Despite being the largest in raw minified bytes, it's actually the lightest once compressed. The tradeoff is boilerplate: you manage the scroll container, refs, and item positioning yourself. Reach for this when you need full control over the DOM structure or a non-standard layout.</p>
-    <p><strong><code>react-virtuoso</code></strong> is the highest-level option. It handles variable heights automatically, supports reverse-scroll lists (chat UIs), sticky group headers, and infinite scroll out of the box — things you'd otherwise spend days building. The API is closest to just dropping in a component. The cost is size: at nearly 3× the gzipped weight of the other two, it's a meaningful addition to a bundle if you're only using its basics.</p>
+    <p><strong><code>react-window</code></strong> is the smallest and most established. Give it a fixed item height, a count, and a render function — it handles the rest. Variable-height items are possible but require manual height pre-measurement, which adds complexity.</p>
+    <p><strong><code>@tanstack/react-virtual</code></strong> is headless — it gives you the virtualization math and leaves all markup to you. Variable heights work without manual measurement, and despite being larger uncompressed, it's actually the lightest once gzipped. The tradeoff is boilerplate.</p>
+    <p><strong><code>react-virtuoso</code></strong> is the highest-level option. Variable heights, reverse-scroll (chat UIs), sticky headers, and infinite scroll all work out of the box. The cost is bundle size — nearly 3× the others gzipped.</p>
+    <p>The API differences are clearest in code. Here's the same 10,000-item list in each:</p>
+
+    <p class="code-label">react-window</p>
+<pre><code>import { FixedSizeList } from 'react-window';
+
+&lt;FixedSizeList height={600} itemCount={items.length} itemSize={40} width="100%"&gt;
+  {({ index, style }) =&gt; &lt;div style={style}&gt;{items[index].name}&lt;/div&gt;}
+&lt;/FixedSizeList&gt;</code></pre>
+
+    <p class="code-label">@tanstack/react-virtual</p>
+<pre><code>const virtualizer = useVirtualizer({
+  count: items.length,
+  getScrollElement: () =&gt; parentRef.current,
+  estimateSize: () =&gt; 40,
+});
+
+&lt;div ref={parentRef} style={{ height: 600, overflow: 'auto' }}&gt;
+  &lt;div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}&gt;
+    {virtualizer.getVirtualItems().map(row =&gt; (
+      &lt;div key={row.key} style={{ position: 'absolute', transform: `translateY(${row.start}px)` }}&gt;
+        {items[row.index].name}
+      &lt;/div&gt;
+    ))}
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+    <p class="code-label">react-virtuoso</p>
+<pre><code>import { Virtuoso } from 'react-virtuoso';
+
+&lt;Virtuoso
+  style={{ height: 600 }}
+  totalCount={items.length}
+  itemContent={index =&gt; &lt;div&gt;{items[index].name}&lt;/div&gt;}
+/&gt;</code></pre>
+
+    <p>The spectrum is clear: react-window needs a height upfront, tanstack hands you the primitives to wire yourself, react-virtuoso asks for almost nothing. More control means more code; more convenience means more bundle.</p>
+
     <p><strong>Bundle sizes</strong> (source: Bundlephobia, May 2026):</p>
     <table>
       <thead>
