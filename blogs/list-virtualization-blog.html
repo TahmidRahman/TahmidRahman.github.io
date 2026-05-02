@@ -142,7 +142,7 @@
 
     <h2>The Problem</h2>
     <p>You're building an admin dashboard. The product manager wants to show all 12,000 user records in a scrollable list — no pagination, "users hate clicking next." You shrug, map over the array, and ship it.</p>
-<pre><code>{items.map(item =&gt; (
+<pre style="white-space: pre; overflow-x: auto;"><code>{items.map(item =&gt; (
   &lt;div key={item.id} className="list-item"&gt;
     {item.name}
   &lt;/div&gt;
@@ -175,7 +175,7 @@
     <p><strong>The outer container</strong> is a fixed-height <code>div</code> with <code>overflow: scroll</code>. This is what the user physically scrolls. Its height is whatever fits your layout — say, <code>600px</code>.</p>
     <p><strong>The inner container</strong> is set to the <em>total</em> height of all items combined — even the ones not rendered. If you have 10,000 items at 40px each, the inner container is <code>400,000px</code> tall. This gives the scrollbar its correct proportions. The browser thinks the content is massive, because mathematically it is.</p>
     <p><strong>Only visible items are rendered.</strong> A scroll event listener calculates which items fall within the current viewport, then mounts just those items — positioned absolutely with <code>transform: translateY()</code>.</p>
-<pre>
+<pre style="white-space: pre; overflow-x: auto;">
 ┌──────────────────────────┐
 │     Outer Container      │  ← fixed height, scrollable
 │  ┌────────────────────┐  │
@@ -203,14 +203,14 @@
     <p>The API differences are clearest in code. Here's the same 10,000-item list in each:</p>
 
     <p class="code-label">react-window</p>
-<pre><code>import { FixedSizeList } from 'react-window';
+<pre style="white-space: pre; overflow-x: auto;"><code>import { FixedSizeList } from 'react-window';
 
 &lt;FixedSizeList height={600} itemCount={items.length} itemSize={40} width="100%"&gt;
   {({ index, style }) =&gt; &lt;div style={style}&gt;{items[index].name}&lt;/div&gt;}
 &lt;/FixedSizeList&gt;</code></pre>
 
     <p class="code-label">@tanstack/react-virtual</p>
-<pre><code>const virtualizer = useVirtualizer({
+<pre style="white-space: pre; overflow-x: auto;"><code>const virtualizer = useVirtualizer({
   count: items.length,
   getScrollElement: () =&gt; parentRef.current,
   estimateSize: () =&gt; 40,
@@ -227,7 +227,7 @@
 &lt;/div&gt;</code></pre>
 
     <p class="code-label">react-virtuoso</p>
-<pre><code>import { Virtuoso } from 'react-virtuoso';
+<pre style="white-space: pre; overflow-x: auto;"><code>import { Virtuoso } from 'react-virtuoso';
 
 &lt;Virtuoso
   style={{ height: 600 }}
