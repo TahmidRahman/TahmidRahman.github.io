@@ -4,94 +4,633 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tahmid Rahman</title>
+    <title>Tahmid Rahman — Senior Frontend Engineer</title>
+    <meta name="description" content="Tahmid Rahman — Senior Frontend Engineer, 8 years scaling open-source civic systems on OpenCRVS." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      html, body {
-        height: 100%;
+      :root {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
         margin: 0;
       }
       body {
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: "Manrope", sans-serif;
+        background: #e7ebf3;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 880px;
+        border-radius: 30px;
+        overflow: hidden;
+        box-shadow: 0 40px 90px -30px rgba(37, 40, 80, 0.5);
+        background: linear-gradient(
+          180deg,
+          oklch(0.44 0.16 278) 0%,
+          oklch(0.55 0.14 276) 16%,
+          oklch(0.74 0.09 274) 38%,
+          oklch(0.93 0.03 272) 60%,
+          #ffffff 82%
+        );
+      }
+
+      /* ---------- top bar ---------- */
+      .topbar {
+        padding: 34px 44px 0;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .identity {
+        display: flex;
+        gap: 18px;
+        align-items: center;
+      }
+      .avatar-btn {
+        position: relative;
+        flex-shrink: 0;
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+        display: block;
+      }
+      .avatar-img {
+        width: 74px;
+        height: 74px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid rgba(255, 255, 255, 0.85);
+        box-shadow: 0 8px 22px rgba(20, 20, 50, 0.3);
+        display: block;
+      }
+      .online-dot {
+        position: absolute;
+        right: 6px;
+        bottom: 6px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #34d399;
+        border: 3px solid #fff;
+        animation: dotpulse 2.2s infinite;
+      }
+      .name {
+        font: 700 20px/1.1 "Space Grotesk", sans-serif;
+        color: #fff;
+      }
+      .role {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.82);
+        margin-top: 3px;
+      }
+      .social-links {
+        display: flex;
+        gap: 9px;
+        align-items: center;
+      }
+      .pill-link {
+        font: 600 12.5px/1 "Manrope", sans-serif;
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        padding: 8px 13px;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+
+      /* ---------- email popover ---------- */
+      .email-popover-wrap {
+        margin: 14px 44px 0;
+        min-height: 0;
+      }
+      .email-popover {
+        display: inline-block;
+        animation: popin 0.22s ease;
+      }
+      .email-popover[hidden] {
+        display: none;
+      }
+      .email-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 12px;
+        padding: 11px 16px;
+        text-decoration: none;
+        box-shadow: 0 12px 30px rgba(20, 24, 60, 0.28);
+      }
+      .dot-green {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #34d399;
+        flex-shrink: 0;
+      }
+      .email-text {
+        font: 600 14px/1 "Manrope", sans-serif;
+        color: #2a2f45;
+      }
+      .email-hint {
+        font: 600 11px/1 "IBM Plex Mono", monospace;
+        color: #8f96b0;
+      }
+
+      /* ---------- hero ---------- */
+      .hero {
+        padding: 30px 44px 34px;
+      }
+      .chip-available {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 6px 13px;
+        border-radius: 999px;
+        margin-bottom: 20px;
+        font: 600 12px/1 "Manrope", sans-serif;
+        color: #fff;
+        letter-spacing: 0.02em;
+      }
+      .headline {
+        font: 700 44px/1.08 "Space Grotesk", sans-serif;
+        color: #fff;
+        margin: 0 0 16px;
+        letter-spacing: -0.02em;
+        max-width: 640px;
+      }
+      .summary {
+        font-size: 16px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+        max-width: 560px;
+      }
+      .summary strong {
+        color: #fff;
+      }
+
+      /* ---------- white panel ---------- */
+      .panel {
+        background: #fff;
+        padding: 36px 44px 46px;
+      }
+
+      .tenure-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        padding-bottom: 24px;
+        margin-bottom: 26px;
+        border-bottom: 1px solid #eef0f6;
+      }
+      .tenure-company {
+        font: 700 18px/1.2 "Space Grotesk", sans-serif;
+        color: #2a2f45;
+      }
+      .tenure-roles {
+        font-size: 13px;
+        color: #6b7291;
+        margin-top: 4px;
+      }
+      .tenure-dates {
+        font: 600 12px/1 "IBM Plex Mono", monospace;
+        color: #9298b2;
+      }
+
+      .filter-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .filter-label {
+        font: 700 12px/1 "IBM Plex Mono", monospace;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #4f46e5;
+      }
+      .filter-sub {
+        font-size: 13.5px;
+        color: #6b7291;
+        margin-top: 6px;
+      }
+      .clear-chip {
+        border: none;
+        background: #eef0fb;
+        color: #4f46e5;
+        font: 600 12.5px/1 "Manrope", sans-serif;
+        padding: 9px 14px;
+        border-radius: 999px;
+        cursor: pointer;
+      }
+      .clear-chip[hidden] {
+        display: none;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin: 18px 0 30px;
+      }
+      .pill {
+        padding: 8px 14px;
+        border-radius: 999px;
+        font: 600 12.5px/1 "Manrope", sans-serif;
+        cursor: pointer;
+        transition: transform 0.12s, background-color 0.15s, color 0.15s, border-color 0.15s;
+        border: 1px solid #e6e8f3;
+        background: #f4f5fb;
+        color: #464c6b;
+        min-height: 36px;
+      }
+      .pill:active {
+        transform: scale(0.96);
+      }
+      .pill.active {
+        background: #4338ca;
+        color: #fff;
+        border-color: #4338ca;
+      }
+
+      /* ---------- timeline ---------- */
+      .timeline {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: #1a1a1a;
+        gap: 14px;
       }
-      .content {
-        text-align: center;
-        max-width: 480px;
-        padding: 2rem 1.25rem;
+      .exp-card {
+        border: 1px solid #e8eaf3;
+        border-radius: 16px;
+        padding: 20px 22px;
+        background: #fff;
+        will-change: transform;
       }
-      h1 {
-        margin: 0 0 0.5rem;
+      .exp-row1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 16px;
+        flex-wrap: wrap;
       }
-      .subtitle {
-        color: #666;
-        margin: 0 0 2.5rem;
-        font-size: 0.95rem;
+      .exp-project {
+        font: 700 17px/1.25 "Space Grotesk", sans-serif;
+        color: #2a2f45;
       }
-      .contact {
-        color: #666;
-        font-size: 0.9rem;
-        margin: 2.5rem 0 0;
+      .exp-period {
+        font: 600 12px/1 "IBM Plex Mono", monospace;
+        color: #9298b2;
+        white-space: nowrap;
+        border-radius: 5px;
       }
-      .contact a {
-        color: #1a1a1a;
+      .exp-period.pulse {
+        animation: tenurePulse 0.6s ease;
       }
-      .blogs-section {
-        text-align: left;
-        width: 100%;
+      .exp-meta {
+        font-size: 13px;
+        color: #6b7291;
+        margin-top: 5px;
       }
-      .blogs-label {
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: #999;
-        margin: 0 0 0.75rem;
+      .exp-tasks {
+        margin: 13px 0 0;
+        padding-left: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
       }
-      .blog-link {
-        display: block;
-        padding: 0.75rem 1rem;
-        border: 1px solid #e8e8e8;
+      .exp-tasks li {
+        font-size: 13.5px;
+        line-height: 1.5;
+        color: #4a5069;
+      }
+      .exp-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 14px;
+      }
+      .exp-tag {
+        font: 600 11px/1 "Manrope", sans-serif;
+        padding: 5px 9px;
         border-radius: 6px;
-        text-decoration: none;
-        color: #1a1a1a;
-        font-size: 0.9rem;
-        transition: border-color 0.15s;
+        background: #f4f5fb;
+        color: #7c839e;
       }
-      .blog-link:hover {
-        border-color: #aaa;
+      .exp-tag.hot {
+        background: #ede9fe;
+        color: #5b21b6;
       }
-      .blog-link__title {
-        font-weight: 600;
+
+      /* ---------- writing ---------- */
+      .writing-section {
+        margin-top: 34px;
+      }
+      .section-label {
+        font: 700 12px/1 "IBM Plex Mono", monospace;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #4f46e5;
+        margin-bottom: 14px;
+      }
+      .writing-card {
         display: block;
-        margin-bottom: 0.2rem;
+        text-decoration: none;
+        border: 1px solid #e8eaf3;
+        border-radius: 16px;
+        padding: 20px 22px;
+        background: linear-gradient(180deg, #fbfbfe, #f4f5fc);
       }
-      .blog-link__desc {
-        font-size: 0.8rem;
-        color: #777;
+      .writing-title {
+        font: 700 16px/1.3 "Space Grotesk", sans-serif;
+        color: #2a2f45;
+      }
+      .writing-desc {
+        font-size: 13.5px;
+        color: #6b7291;
+        margin-top: 6px;
+      }
+      .writing-read {
+        color: #4f46e5;
+        font-weight: 600;
+      }
+
+      /* ---------- education + certification ---------- */
+      .edu-cert-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+        margin-top: 34px;
+      }
+      .edu-title {
+        font: 600 15px/1.3 "Space Grotesk", sans-serif;
+        color: #2a2f45;
+      }
+      .edu-sub {
+        font-size: 13px;
+        color: #6b7291;
+        margin-top: 4px;
+      }
+      .edu-note {
+        font-size: 12.5px;
+        color: #8890a8;
+        margin-top: 8px;
+        line-height: 1.5;
+      }
+      .cert-link {
+        font-size: 12.5px;
+        color: #4f46e5;
+        font-weight: 600;
+        text-decoration: none;
+        margin-top: 8px;
+        display: inline-block;
+      }
+
+      /* ---------- footer ---------- */
+      .footer {
+        margin-top: 38px;
+        padding-top: 22px;
+        border-top: 1px solid #eef0f6;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .footer-lang {
+        font-size: 12.5px;
+        color: #9298b2;
+      }
+      .footer-links {
+        display: flex;
+        gap: 16px;
+      }
+      .footer-links a {
+        font: 600 13px/1 "Manrope", sans-serif;
+        color: #4f46e5;
+        text-decoration: none;
+      }
+
+      /* ---------- keyframes ---------- */
+      @keyframes dotpulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.55);
+        }
+        70% {
+          box-shadow: 0 0 0 8px rgba(52, 211, 153, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
+        }
+      }
+      @keyframes popin {
+        from {
+          opacity: 0;
+          transform: translateY(6px) scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes tenurePulse {
+        0% {
+          color: #4338ca;
+          background: #eef0fb;
+        }
+        100% {
+          color: #9298b2;
+          background: transparent;
+        }
+      }
+
+      /* ---------- responsive ---------- */
+      @media (max-width: 900px) {
+        body {
+          padding: 0;
+        }
+        .card {
+          border-radius: 0;
+          box-shadow: none;
+        }
+      }
+      @media (max-width: 640px) {
+        .topbar {
+          padding: 26px 22px 0;
+        }
+        .email-popover-wrap {
+          margin: 14px 22px 0;
+        }
+        .hero {
+          padding: 24px 22px 28px;
+        }
+        .panel {
+          padding: 30px 22px 36px;
+        }
+        .headline {
+          font-size: 32px;
+        }
+        .edu-cert-grid {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .online-dot {
+          animation: none;
+        }
+        .email-popover {
+          animation: none;
+        }
+        .exp-period.pulse {
+          animation: none;
+        }
+      }
+
+      .contact-footnote {
+        text-align: center;
+        color: #9298b2;
+        font-size: 12px;
+        margin-top: 18px;
       }
     </style>
   </head>
   <body>
-    <div class="content">
-      <h1>Hey!</h1>
-      <p class="subtitle">
-        You can reach me anytime at
-        <a href="mailto:tahmid131@gmail.com">tahmid131@gmail.com</a>
-      </p>
+    <div>
+      <div class="card">
+        <div class="topbar">
+          <div class="identity">
+            <button
+              class="avatar-btn"
+              id="avatarBtn"
+              type="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-label="Show email"
+            >
+              <img class="avatar-img" src="assets/profile.png" alt="Tahmid Rahman" />
+              <span class="online-dot"></span>
+            </button>
+            <div>
+              <div class="name">Tahmid Rahman</div>
+              <div class="role">Senior Frontend Engineer · Dhaka, Bangladesh</div>
+            </div>
+          </div>
+          <div class="social-links">
+            <a class="pill-link" href="https://github.com/tahmidrahman-dsi" target="_blank" rel="noopener">GitHub</a>
+            <a class="pill-link" href="https://www.linkedin.com/in/tahmid-rahman-se" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
 
-      <div class="blogs-section">
-        <p class="blogs-label">Writing</p>
-        <a class="blog-link" href="/blogs/list-virtualization-blog.html">
-          <span class="blog-link__title">You're Rendering Too Much: The Case for List Virtualization</span>
-          <span class="blog-link__desc">Your list works fine — until it has 10,000 items.</span>
-        </a>
+        <div class="email-popover-wrap">
+          <div class="email-popover" id="emailPopover" hidden>
+            <a class="email-pill" href="mailto:tahmid131@gmail.com">
+              <span class="dot-green"></span>
+              <span class="email-text">tahmid131@gmail.com</span>
+              <span class="email-hint">↗ mail me</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero">
+          <div class="chip-available">
+            <span class="dot-green"></span>
+            <span>Available for senior frontend roles</span>
+          </div>
+          <h1 class="headline">Senior Frontend Engineer — 8 years scaling open-source civic systems</h1>
+          <p class="summary">
+            Full-stack depth with a frontend heart — architecture, maintainability and production reliability, shipped
+            with distributed multinational teams on <strong>OpenCRVS</strong>, now live across countries.
+          </p>
+        </div>
+
+        <div class="panel">
+          <div class="tenure-header">
+            <div>
+              <div class="tenure-company">Dynamic Solution Innovators</div>
+              <div class="tenure-roles">Asst. Software Engineer → Senior Software Engineer</div>
+            </div>
+            <div class="tenure-dates">Aug 2018 — Present · 7 yrs</div>
+          </div>
+
+          <div class="filter-row">
+            <div>
+              <div class="filter-label">Filter the timeline</div>
+              <div class="filter-sub">Tap a tool to show only where I shipped with it.</div>
+            </div>
+            <button class="clear-chip" id="clearChip" type="button" hidden></button>
+          </div>
+
+          <div class="pill-row" id="pillRow"></div>
+
+          <div class="timeline" id="timeline"></div>
+
+          <div class="writing-section">
+            <div class="section-label">Writing</div>
+            <a class="writing-card" href="blogs/list-virtualization-blog.html">
+              <div class="writing-title">You're Rendering Too Much: The Case for List Virtualization</div>
+              <div class="writing-desc">
+                Your list works fine — until it has 10,000 items. <span class="writing-read">Read →</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="edu-cert-grid">
+            <div>
+              <div class="section-label">Education</div>
+              <div class="edu-title">B.Sc. in Computer Science &amp; Engineering</div>
+              <div class="edu-sub">Military Institute of Science &amp; Technology (MIST) · 2015</div>
+              <div class="edu-note">
+                Thesis — Relationship-Based Access Control (ReBAC), supervised by Prof. Dr. Muhammad Mashroor Ali (BUET).
+              </div>
+            </div>
+            <div>
+              <div class="section-label">Certification</div>
+              <div class="edu-title">Building Modern Node.js Applications on AWS</div>
+              <div class="edu-sub">Coursera · Dec 2020</div>
+              <a
+                class="cert-link"
+                href="https://www.coursera.org/account/accomplishments/certificate/8SH6TKS5FL4B"
+                target="_blank"
+                rel="noopener"
+                >View certificate →</a
+              >
+            </div>
+          </div>
+
+          <div class="footer">
+            <div class="footer-lang">English (Fluent) · Bengali (Native)</div>
+            <div class="footer-links">
+              <a href="mailto:tahmid131@gmail.com">Email</a>
+              <a href="https://github.com/tahmidrahman-dsi" target="_blank" rel="noopener">GitHub</a>
+              <a href="https://www.linkedin.com/in/tahmid-rahman-se" target="_blank" rel="noopener">LinkedIn</a>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <p class="contact">This website is currently under maintenance</p>
     </div>
+
+    <script src="assets/site.js"></script>
   </body>
 </html>
