@@ -28,3 +28,6 @@ yarn-debug.log*
 yarn-error.log*
 
 design_handoff_personal_site/
+
+# local notes
+CLAUDE.local.md
