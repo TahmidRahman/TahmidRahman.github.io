@@ -25,18 +25,12 @@
       }
       body {
         font-family: "Manrope", sans-serif;
-        background: #e7ebf3;
-        padding: 40px 20px;
-        display: flex;
-        justify-content: center;
+        background: #fff;
       }
 
       .card {
         width: 100%;
-        max-width: 880px;
-        border-radius: 30px;
-        overflow: hidden;
-        box-shadow: 0 40px 90px -30px rgba(37, 40, 80, 0.5);
+        min-height: 100vh;
         background: linear-gradient(
           180deg,
           oklch(0.44 0.16 278) 0%,
@@ -49,7 +43,7 @@
 
       /* ---------- top bar ---------- */
       .topbar {
-        padding: 34px 44px 0;
+        padding: 34px max(44px, calc((100% - 880px) / 2)) 0;
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
@@ -116,7 +110,7 @@
 
       /* ---------- email popover ---------- */
       .email-popover-wrap {
-        margin: 14px 44px 0;
+        margin: 14px max(44px, calc((100% - 880px) / 2)) 0;
         min-height: 0;
       }
       .email-popover {
@@ -154,7 +148,7 @@
 
       /* ---------- hero ---------- */
       .hero {
-        padding: 30px 44px 34px;
+        padding: 30px max(44px, calc((100% - 880px) / 2)) 34px;
       }
       .chip-available {
         display: inline-flex;
@@ -190,7 +184,7 @@
       /* ---------- white panel ---------- */
       .panel {
         background: #fff;
-        padding: 36px 44px 46px;
+        padding: 36px max(44px, calc((100% - 880px) / 2)) 46px;
       }
 
       .tenure-header {
@@ -465,27 +459,18 @@
       }
 
       /* ---------- responsive ---------- */
-      @media (max-width: 900px) {
-        body {
-          padding: 0;
-        }
-        .card {
-          border-radius: 0;
-          box-shadow: none;
-        }
-      }
       @media (max-width: 640px) {
         .topbar {
-          padding: 26px 22px 0;
+          padding: 26px max(22px, calc((100% - 880px) / 2)) 0;
         }
         .email-popover-wrap {
-          margin: 14px 22px 0;
+          margin: 14px max(22px, calc((100% - 880px) / 2)) 0;
         }
         .hero {
-          padding: 24px 22px 28px;
+          padding: 24px max(22px, calc((100% - 880px) / 2)) 28px;
         }
         .panel {
-          padding: 30px 22px 36px;
+          padding: 30px max(22px, calc((100% - 880px) / 2)) 36px;
         }
         .headline {
           font-size: 32px;
